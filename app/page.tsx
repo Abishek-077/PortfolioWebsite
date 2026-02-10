@@ -1,14 +1,41 @@
+import BackgroundParticles from "../components/BackgroundParticles";
+import Blog from "../components/Blog";
+import Hero from "../components/Hero";
+import Navbar from "../components/Navbar";
+import Projects from "../components/Projects";
+import TechStack from "../components/TechStack";
+import Testimonials from "../components/Testimonials";
+
 export default function Home() {
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col justify-center px-6 py-16">
-      <p className="text-sm uppercase tracking-[0.2em] text-zinc-400">Portfolio</p>
-      <h1 className="mt-4 text-4xl font-semibold tracking-tight text-zinc-100 sm:text-6xl">
-        Build and ship your best work.
-      </h1>
-      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-300">
-        This starter sets up Next.js App Router, TypeScript, and Tailwind CSS with a dark-first
-        design system so you can focus on your content and projects.
-      </p>
+    <main className="relative min-h-screen overflow-x-hidden bg-slate-950 text-slate-100">
+      <BackgroundParticles />
+      <Navbar />
+      <Hero />
+      <TechStack />
+      <Projects />
+      <Testimonials />
+      <Blog />
+
+      <footer className="relative z-10 border-t border-white/10 py-10">
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm text-slate-400 md:flex-row">
+          <p>© {new Date().getFullYear()} Alex Carter. Crafted with motion & intent.</p>
+          <div className="flex items-center gap-4">
+            <a href="#" className="transition hover:text-cyan-300">
+              GitHub
+            </a>
+            <a href="#" className="transition hover:text-cyan-300">
+              LinkedIn
+            </a>
+            <a href="#" className="transition hover:text-cyan-300">
+              X/Twitter
+            </a>
+            <a href="#" className="transition hover:text-cyan-300">
+              Dribbble
+            </a>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
