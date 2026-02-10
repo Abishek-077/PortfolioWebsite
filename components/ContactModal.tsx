@@ -1,69 +1,114 @@
-"use client";
+'use client';
 
-import { AnimatePresence, motion } from "framer-motion";
+import { FormEvent, useState } from 'react';
 
-interface ContactModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+type SubmitStatus = 'idle' | 'loading' | 'success' | 'error';
+
+interface FormState {
+  name: string;
+  email: string;
+  message: string;
 }
 
-export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
-  return (
-    <AnimatePresence>
-      {isOpen ? (
-        <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 px-4 backdrop-blur-sm"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-        >
-          <motion.div
-            className="w-full max-w-xl rounded-2xl border border-cyan-300/20 bg-slate-900/95 p-6 shadow-[0_0_80px_-30px_rgba(34,211,238,0.7)]"
-            initial={{ y: 40, opacity: 0, scale: 0.96 }}
-            animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: 20, opacity: 0, scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 220, damping: 22 }}
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="text-xl font-semibold text-white">Let&apos;s build something great</h3>
-              <button
-                onClick={onClose}
-                className="rounded-lg border border-white/15 px-3 py-1.5 text-sm text-slate-300 transition hover:border-cyan-300/60 hover:text-cyan-200"
-              >
-                Close
-              </button>
-            </div>
+const INITIAL_FORM_STATE: FormState = {
+  name: '',
+  email: '',
+  message: '',
+};
 
-            <form className="space-y-4">
-              <input
-                type="text"
-                placeholder="Your name"
-                className="w-full rounded-xl border border-white/15 bg-slate-950 px-4 py-3 text-sm outline-none ring-cyan-300/60 transition focus:ring-2"
-              />
-              <input
-                type="email"
-                placeholder="Your email"
-                className="w-full rounded-xl border border-white/15 bg-slate-950 px-4 py-3 text-sm outline-none ring-cyan-300/60 transition focus:ring-2"
-              />
-              <textarea
-                rows={5}
-                placeholder="Project details"
-                className="w-full rounded-xl border border-white/15 bg-slate-950 px-4 py-3 text-sm outline-none ring-cyan-300/60 transition focus:ring-2"
-              />
-              <motion.button
-                type="submit"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="w-full rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 px-4 py-3 text-sm font-medium text-slate-950"
-              >
-                Send message
-              </motion.button>
-            </form>
-          </motion.div>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
+export default function ContactModal() {
+  const [form, setForm] = useState<FormState>(INITIAL_FORM_STATE);
+  const [status, setStatus] = useState<SubmitStatus>('idle');
+  const [feedback, setFeedback] = useState('');
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    setStatus('loading');
+    setFeedback('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      const result = (await response.json()) as { success: boolean; message?: string; error?: string };
+
+      if (!response.ok || !result.success) {
+        setStatus('error');
+        setFeedback(result.error ?? 'Unable to submit your message. Please try again.');
+        return;
+      }
+
+      setStatus('success');
+      setFeedback(result.message ?? 'Thanks! Your message has been sent.');
+      setForm(INITIAL_FORM_STATE);
+    } catch (error) {
+      console.error('Contact form submission failed:', error);
+      setStatus('error');
+      setFeedback('Unable to submit your message. Please try again.');
+    }
+  };
+
+  const isSubmitting = status === 'loading';
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium">Name</label>
+        <input
+          id="name"
+          name="name"
+          value={form.name}
+          onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
+          required
+          disabled={isSubmitting}
+          className="w-full rounded border p-2"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="email" className="block text-sm font-medium">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
+          required
+          disabled={isSubmitting}
+          className="w-full rounded border p-2"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="message" className="block text-sm font-medium">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          value={form.message}
+          onChange={(event) => setForm((prev) => ({ ...prev, message: event.target.value }))}
+          required
+          disabled={isSubmitting}
+          className="w-full rounded border p-2"
+          rows={5}
+        />
+      </div>
+
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="rounded bg-black px-4 py-2 text-white disabled:opacity-50"
+      >
+        {isSubmitting ? 'Sending...' : 'Send message'}
+      </button>
+
+      {status === 'success' && <p className="text-sm text-green-600">{feedback}</p>}
+      {status === 'error' && <p className="text-sm text-red-600">{feedback}</p>}
+    </form>
   );
 }
