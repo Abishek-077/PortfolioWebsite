@@ -1,66 +1,35 @@
 export type TechStackItem = {
-  id: string;
   name: string;
-  category: 'Frontend' | 'Backend' | 'Infrastructure' | 'Design' | 'Tooling';
+  slug: string;
   icon: string;
-  proficiency: 'Advanced' | 'Intermediate' | 'Working Knowledge';
-  years: number;
-  website: string;
 };
 
-export const techStack: TechStackItem[] = [
-  {
-    id: 'typescript',
-    name: 'TypeScript',
-    category: 'Frontend',
-    icon: '/images/tech/typescript.svg',
-    proficiency: 'Advanced',
-    years: 5,
-    website: 'https://www.typescriptlang.org/',
-  },
-  {
-    id: 'nextjs',
-    name: 'Next.js',
-    category: 'Frontend',
-    icon: '/images/tech/nextjs.svg',
-    proficiency: 'Advanced',
-    years: 4,
-    website: 'https://nextjs.org/',
-  },
-  {
-    id: 'nodejs',
-    name: 'Node.js',
-    category: 'Backend',
-    icon: '/images/tech/nodejs.svg',
-    proficiency: 'Advanced',
-    years: 5,
-    website: 'https://nodejs.org/',
-  },
-  {
-    id: 'postgresql',
-    name: 'PostgreSQL',
-    category: 'Backend',
-    icon: '/images/tech/postgresql.svg',
-    proficiency: 'Intermediate',
-    years: 3,
-    website: 'https://www.postgresql.org/',
-  },
-  {
-    id: 'figma',
-    name: 'Figma',
-    category: 'Design',
-    icon: '/images/tech/figma.svg',
-    proficiency: 'Advanced',
-    years: 4,
-    website: 'https://www.figma.com/',
-  },
-  {
-    id: 'docker',
-    name: 'Docker',
-    category: 'Infrastructure',
-    icon: '/images/tech/docker.svg',
-    proficiency: 'Intermediate',
-    years: 3,
-    website: 'https://www.docker.com/',
-  },
+export const primaryTechStack: TechStackItem[] = [
+  { name: "HTML5", slug: "html5", icon: "/tech/html5.svg" },
+  { name: "CSS", slug: "css", icon: "/tech/css.svg" },
+  { name: "JavaScript", slug: "javascript", icon: "/tech/javascript.svg" },
+  { name: "TypeScript", slug: "typescript", icon: "/tech/typescript.svg" },
+  { name: "React", slug: "react", icon: "/tech/react.svg" },
+  { name: "Next.js", slug: "nextjs", icon: "/tech/nextjs.svg" },
+  { name: "Tailwind CSS", slug: "tailwindcss", icon: "/tech/tailwindcss.svg" },
+  { name: "Node.js", slug: "nodejs", icon: "/tech/nodejs.svg" },
+  { name: "Express", slug: "express", icon: "/tech/express.svg" },
+  { name: "NestJS", slug: "nestjs", icon: "/tech/nestjs.svg" },
+  { name: "Python", slug: "python", icon: "/tech/python.svg" },
+  { name: "FastAPI", slug: "fastapi", icon: "/tech/fastapi.svg" },
+];
+
+export const secondaryTechStack: TechStackItem[] = [
+  { name: "PostgreSQL", slug: "postgresql", icon: "/tech/postgresql.svg" },
+  { name: "MongoDB", slug: "mongodb", icon: "/tech/mongodb.svg" },
+  { name: "Redis", slug: "redis", icon: "/tech/redis.svg" },
+  { name: "Prisma", slug: "prisma", icon: "/tech/prisma.svg" },
+  { name: "Docker", slug: "docker", icon: "/tech/docker.svg" },
+  { name: "Git", slug: "git", icon: "/tech/git.svg" },
+  { name: "GitHub Actions", slug: "githubactions", icon: "/tech/githubactions.svg" },
+  { name: "Nginx", slug: "nginx", icon: "/tech/nginx.svg" },
+  { name: "AWS", slug: "aws", icon: "/tech/aws.svg" },
+  { name: "OpenAI", slug: "openai", icon: "/tech/openai.svg" },
+  { name: "Hugging Face", slug: "huggingface", icon: "/tech/huggingface.svg" },
+  { name: "Postman", slug: "postman", icon: "/tech/postman.svg" },
 ];

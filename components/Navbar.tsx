@@ -1,61 +1,136 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState } from "react";
-import ContactModal from "./ContactModal";
+import Link from "next/link";
+import { AlignLeft, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import * as React from "react";
 
-const links = ["About", "Projects", "Testimonials", "Blog", "Contact"];
+import { ShinyButton } from "@/components/magicui/shiny-button";
+import { useContactModal } from "@/components/providers/ContactModalProvider";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { profile } from "@/data/profile";
+import { cn } from "@/lib/utils";
 
-export default function Navbar() {
-  const [isDark, setIsDark] = useState(true);
-  const [isContactOpen, setIsContactOpen] = useState(false);
+const links = [
+  { name: "About", url: "/#about" },
+  { name: "Projects", url: "/projects" },
+  { name: "Testimonials", url: "/#testimonials" },
+  { name: "Blog", url: "/blog" },
+];
 
-  const toggleTheme = () => {
-    setIsDark((prev) => !prev);
-    document.documentElement.classList.toggle("dark");
-  };
+function BrandBadge({ className, children }: { className?: string; children: React.ReactNode }) {
+  return (
+    <div
+      className={cn(
+        "group relative mx-auto flex max-w-fit flex-row items-center justify-center rounded-2xl bg-white/40 px-4 py-1.5 text-sm font-medium shadow-[inset_0_-8px_10px_#8fdfff1f] backdrop-blur-sm transition-shadow duration-500 ease-out [--bg-size:300%] hover:shadow-[inset_0_-5px_10px_#8fdfff3f] dark:bg-black/40",
+        className,
+      )}
+    >
+      <div className="absolute inset-0 block h-full w-full animate-gradient bg-gradient-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-[length:var(--bg-size)_100%] p-[1px] ![mask-composite:subtract] [border-radius:inherit] [mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)]" />
+      {children}
+    </div>
+  );
+}
+
+function ThemeToggle() {
+  const { setTheme, theme } = useTheme();
 
   return (
-    <>
-      <motion.header
-        className="sticky top-0 z-40 border-b border-white/10 bg-slate-950/85 backdrop-blur-xl"
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
+    <div className="rounded-full border">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="hover:bg-transparent"
+        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
       >
-        <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
-          <a href="#" className="text-lg font-semibold tracking-wide text-white">
-            AC.
-          </a>
+        <Sun />
+        <span className="sr-only">Toggle theme</span>
+      </Button>
+      <Button
+        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+        variant="ghost"
+        size="icon"
+        className="mr-1 h-7 w-8 rounded-full hover:bg-transparent dark:bg-zinc-800"
+      >
+        <Moon />
+        <span className="sr-only">Toggle theme</span>
+      </Button>
+    </div>
+  );
+}
 
-          <div className="hidden items-center gap-6 text-sm text-slate-300 md:flex">
-            {links.map((item) => (
-              <button
-                key={item}
-                className="group relative py-2 transition hover:text-cyan-300"
-                onClick={() => item === "Contact" && setIsContactOpen(true)}
-              >
-                {item}
-                <span className="absolute bottom-0 left-0 h-px w-0 bg-cyan-300 transition-all duration-300 group-hover:w-full" />
-              </button>
+function MobileNav() {
+  const [open, setOpen] = React.useState(false);
+  const { openModal } = useContactModal();
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger className="mr-3 md:hidden">
+        <AlignLeft size={25} />
+      </SheetTrigger>
+
+      <SheetContent side="left">
+        <SheetHeader className="text-left">
+          <SheetTitle>{profile.name}</SheetTitle>
+        </SheetHeader>
+
+        <ShinyButton
+          onClick={() => {
+            openModal();
+            setOpen(false);
+          }}
+          className="mb-5 mt-4 rounded-full border"
+        >
+          Contact
+        </ShinyButton>
+
+        <div className="flex flex-col gap-4 px-2 text-lg font-medium">
+          {links.map((link) => (
+            <SheetClose asChild key={link.name}>
+              <Link href={link.url} className="transition-colors hover:text-foreground/80">
+                {link.name}
+              </Link>
+            </SheetClose>
+          ))}
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+export default function Navbar() {
+  const { openModal } = useContactModal();
+
+  return (
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 items-center">
+        <MobileNav />
+
+        <div className="hidden gap-2 md:flex">
+          <Link className="mr-6 flex items-center" href="/">
+            <span className="font-bold">
+              <BrandBadge>{profile.name}</BrandBadge>
+            </span>
+          </Link>
+
+          <div className="flex items-center space-x-6 text-sm font-medium">
+            {links.map((link) => (
+              <Link key={link.name} href={link.url} className="transition-colors hover:text-foreground/80" aria-label={link.name}>
+                {link.name}
+              </Link>
             ))}
           </div>
+        </div>
 
-          <div className="flex items-center gap-3">
-            <motion.button
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.92 }}
-              className="rounded-full border border-white/20 p-2 text-slate-200 transition hover:border-cyan-300/70 hover:text-cyan-300"
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-            >
-              {isDark ? "☀️" : "🌙"}
-            </motion.button>
-          </div>
-        </nav>
-      </motion.header>
+        <ShinyButton onClick={openModal} className="ml-auto hidden rounded-full border md:block">
+          Contact
+        </ShinyButton>
 
-      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
-    </>
+        <div className="ml-auto md:ml-2">
+          <ThemeToggle />
+        </div>
+      </div>
+    </nav>
   );
 }

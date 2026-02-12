@@ -1,41 +1,39 @@
-import BackgroundParticles from "../components/BackgroundParticles";
-import Blog from "../components/Blog";
-import Hero from "../components/Hero";
-import Navbar from "../components/Navbar";
-import Projects from "../components/Projects";
-import TechStack from "../components/TechStack";
-import Testimonials from "../components/Testimonials";
+import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 
-export default function Home() {
+import { Particles } from "@/components/magicui/particles";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { ProjectShowcase } from "@/components/sections/ProjectShowcase";
+import { RecentBlogSection } from "@/components/sections/RecentBlogSection";
+import { ServicesBentoSection } from "@/components/sections/ServicesBentoSection";
+import { TechnologyStackSection } from "@/components/sections/TechnologyStackSection";
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
+import { Button } from "@/components/ui/button";
+import { featuredProjects } from "@/data/projects";
+
+export default function HomePage() {
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-slate-950 text-slate-100">
-      <BackgroundParticles />
-      <Navbar />
-      <Hero />
-      <TechStack />
-      <Projects />
-      <Testimonials />
-      <Blog />
+    <main className="relative z-10">
+      <Particles className="pointer-events-none fixed inset-0 z-0" quantity={150} ease={80} refresh color="#ffffff" />
+      <HeroSection />
+      <ServicesBentoSection />
+      <TechnologyStackSection />
 
-      <footer className="relative z-10 border-t border-white/10 py-10">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm text-slate-400 md:flex-row">
-          <p>© {new Date().getFullYear()} Alex Carter. Crafted with motion & intent.</p>
-          <div className="flex items-center gap-4">
-            <a href="#" className="transition hover:text-cyan-300">
-              GitHub
-            </a>
-            <a href="#" className="transition hover:text-cyan-300">
-              LinkedIn
-            </a>
-            <a href="#" className="transition hover:text-cyan-300">
-              X/Twitter
-            </a>
-            <a href="#" className="transition hover:text-cyan-300">
-              Dribbble
-            </a>
-          </div>
+      <section className="container py-12 md:py-24">
+        <div className="mb-12 flex justify-between">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Latset Projects</h2>
+          <Link href="/projects" aria-label="See all projects">
+            <Button variant="outline" className="ml-0.5">
+              All Projects
+              <ExternalLink className="size-4" />
+            </Button>
+          </Link>
         </div>
-      </footer>
+        <ProjectShowcase projects={featuredProjects} />
+      </section>
+
+      <TestimonialsSection />
+      <RecentBlogSection />
     </main>
   );
 }
