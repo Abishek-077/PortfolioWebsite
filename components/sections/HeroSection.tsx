@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Mail } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 
 import { GithubLogo, LinkedinLogo, YouTubeLogo } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -127,6 +127,17 @@ export function HeroSection() {
             </Button>
           </Link>
 
+          <Link href={`tel:${profile.phone}`} target="_blank" rel="noreferrer">
+            <Button
+              variant="outline"
+              aria-label="Call me"
+              className="transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_0_22px_-8px_rgba(56,189,248,0.8)]"
+            >
+              <Phone />
+              Call me
+            </Button>
+          </Link>
+
           <div className="flex gap-2">
             <Link href={profile.social.github} target="_blank" rel="noreferrer">
               <Button
@@ -161,6 +172,16 @@ export function HeroSection() {
               </Button>
             </Link>
           </div>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+          <Link href={`mailto:${profile.email}`} className="transition-colors hover:text-foreground">
+            {profile.email}
+          </Link>
+          <span className="hidden sm:inline">|</span>
+          <Link href={`tel:${profile.phone}`} className="transition-colors hover:text-foreground">
+            {profile.phone}
+          </Link>
         </div>
       </div>
     </section>

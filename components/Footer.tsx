@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Mail, Phone } from "lucide-react";
 
 import { GithubLogo, LinkedinLogo, YouTubeLogo } from "@/components/icons";
 import { useContactModal } from "@/components/providers/ContactModalProvider";
@@ -29,6 +29,17 @@ export default function Footer() {
             <ArrowRight className="mt-0.5" size={16} />
           </div>
         </button>
+
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+          <Link href={`mailto:${profile.email}`} className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground">
+            <Mail className="size-3.5" />
+            {profile.email}
+          </Link>
+          <Link href={`tel:${profile.phone}`} className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground">
+            <Phone className="size-3.5" />
+            {profile.phone}
+          </Link>
+        </div>
 
         <nav className="flex gap-4 sm:ml-auto">
           <Link target="_blank" rel="noreferrer" aria-label="GitHub" href={profile.social.github}>

@@ -5,6 +5,7 @@ export const profile = {
   summary:
     "I build scalable full-stack products with a backend-first approach, integrating AI APIs, resilient data layers, and production-ready infrastructure.",
   email: "technosoft0777@gmail.com",
+  phone: "9764398732",
   website: "https://github.com/Abishek-077",
   social: {
     github: "https://github.com/Abishek-077",
