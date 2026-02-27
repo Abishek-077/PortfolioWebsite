@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { name: "About", url: "/#about" },
+  { name: "Certifications", url: "/#certifications" },
   { name: "Projects", url: "/projects" },
   { name: "Testimonials", url: "/#testimonials" },
   { name: "Blog", url: "/blog" },
