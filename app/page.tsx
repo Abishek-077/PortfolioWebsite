@@ -8,6 +8,7 @@ import { RecentBlogSection } from "@/components/sections/RecentBlogSection";
 import { ServicesBentoSection } from "@/components/sections/ServicesBentoSection";
 import { TechnologyStackSection } from "@/components/sections/TechnologyStackSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
+import { CertificationsSection } from "@/components/sections/CertificationsSection";
 import { Button } from "@/components/ui/button";
 import { featuredProjects } from "@/data/projects";
 
@@ -18,10 +19,11 @@ export default function HomePage() {
       <HeroSection />
       <ServicesBentoSection />
       <TechnologyStackSection />
+      <CertificationsSection />
 
       <section className="container py-12 md:py-24">
         <div className="mb-12 flex justify-between">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Latset Projects</h2>
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Latest Projects</h2>
           <Link href="/projects" aria-label="See all projects">
             <Button variant="outline" className="ml-0.5">
               All Projects
