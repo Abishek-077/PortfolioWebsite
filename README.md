@@ -3,7 +3,7 @@
 This repository contains a Next.js portfolio site.
 
 ## Local Development
-
+its about meee man
 ```bash
 npm install
 npm run dev
