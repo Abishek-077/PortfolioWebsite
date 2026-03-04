@@ -27,6 +27,6 @@ npm run start
    - Framework: `Next.js`
    - Build Command: `npm run build`
    - Output: `.next`
-4. Deploy.
+4. Deploy. yea only me
 
 No environment variables are required for the current version.
